@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
+      crossorigin="anonymous"
+    />    
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="dummy/best.json"></script>
+    <script tpye="text/javascript">
+      let bestGameData = JSON.parse(JSON.stringify(Best));
+
+      function moveToRul(e) {
+        console.log(e.target.id)
+        location.href = "rule.html?id:"+ e.target.id;
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="menubar">
+      <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" style="padding: 8px;">BoardGame Rules</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarsExample02" >
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">홈<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="list.html">목록</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="request.html">요청</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    
+    <div id="best-game" style="padding: 5vh;">
+      <h1 style="padding-bottom: 5vh;">이달의 게임</h1>
+      <div id="best-game-content"></div>
+      <script>
+        bestGameData.forEach(data => {
+          const best = document.getElementById('best-game-content');
+          const warpper = document.createElement('div');
+          warpper.className = "best-wrapper";
+          warpper.style.padding = "5vh";
+
+
+          const title = document.createElement('h1');
+          const titleText = document.createTextNode(data.title);
+          title.setAttribute("id", data.id);
+          title.className = "best-title";
+          title.appendChild(titleText);
+          warpper.appendChild(title);
+
+          const imgContentWarpper = document.createElement('div');
+          imgContentWarpper.className = "best-game-content";
+
+          const img = document.createElement('img');
+          img.className = "best-game-img"
+          img.setAttribute('src', data.image);
+          imgContentWarpper.appendChild(img);
+
+          const content = document.createElement('h3');
+          const contentText = document.createTextNode(data.content);
+          content.className ="best-game-text";
+          content.appendChild(contentText);
+          imgContentWarpper.appendChild(content);
+
+          warpper.appendChild(imgContentWarpper);
+          best.appendChild(warpper);
+
+          document.getElementById(data.id).addEventListener("click", moveToRul, false);
+        });
+      </script>
+  </body>
+</html>

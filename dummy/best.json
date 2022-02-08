@@ -1,0 +1,20 @@
+Best = [
+  {
+    "id" : "1",
+    "title" : "체스",
+    "image" : "./img/chess.png",
+    "content" : "누구나 쉽게 접할수 있는 체스! 상대방과 전략을 겨뤄보세요~"
+  },
+  {
+    "id" : "2",
+    "title" : "루미큐브",
+    "image" : "./img/rummiqub.png",
+    "content" : "1부터 13까지의 숫자로 최대 4명이서 경쟁하는 루미큐브~"
+  },
+  {
+    "id" : "3",
+    "title" : "스플렌더",
+    "image" : "./img/splendor.png",
+    "content" : "보석을 모아서 카드를 구입하세요~ 누가더 빨리 목표에 도달할까요?"
+  }
+]

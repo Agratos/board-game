@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
+      crossorigin="anonymous"
+    />    
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="./css/list.css">
+    <script src="dummy/games.json"></script>
+    <script tpye="text/javascript">
+      let gameListData = JSON.parse(JSON.stringify(Games));
+
+      let totalData = gameListData.length;
+      let dataPerPage = 5;
+      let pageCount = 10;        
+    
+      function paging(totalData, dataPerPage, pageCount, currentPage){ 
+        let totalPage = Math.ceil(totalData/dataPerPage);    
+        let pageGroup = Math.ceil(currentPage/pageCount);    
+        
+        let last = pageGroup * pageCount;    
+        if(last > totalPage)
+            last = totalPage;
+        let first = last - (pageCount-1);    
+        let next = last+1;
+        let prev = first-1;
+        
+        let $pingingView = $("#paging");
+        
+        let html = "";
+        
+        if(prev > 0)
+            html += "<a href=# id='prev'>이전</a> ";
+        
+        for(let i = first; i <= last; i++) {
+            html += "<a href='#' id=" + i + ">" + i + "</a> ";
+        }
+        
+        if(last < totalPage)
+            html += "<a href=# id='next'>다음</a>";
+        
+        $("#paging").html(html); 
+        $("#paging a").css("color", "black"); 
+        $("#paging a#" + currentPage).css({"text-decoration":"none", 
+                                           "color":"blue", 
+                                           "font-weight":"bold"});    
+                                           
+        $("#paging a").click(function(){
+            let $item = $(this);
+            let $id = $item.attr("id");
+            let selectedPage = $item.text();
+            
+            if($id == "next")    selectedPage = next;
+            if($id == "prev")    selectedPage = prev;
+
+            paging(totalData, dataPerPage, pageCount, selectedPage);
+        }); 
+        show(currentPage);
+      }
+    
+      $("document").ready(function(){        
+          paging(totalData, dataPerPage, pageCount, 1);
+      });
+
+      function show(num){
+        let list = document.getElementById("game-list");
+
+        if(list.hasChildNodes() == true){
+          while(list.hasChildNodes()) {
+            list.removeChild(list.firstChild)
+          }
+        }
+        
+        let count = 0;
+        let currentNum = (num * 5) - 5;
+
+        while(true){
+          if(count == 5 || gameListData[currentNum] == null)
+            break;
+          let list = document.getElementById("game-list");
+          const warpper = document.createElement('div');
+          warpper.className = "list-wrapper";
+
+          const imgContentWarpper = document.createElement('div');
+          imgContentWarpper.className = "list-img-wrapper";
+          const img = document.createElement('img');
+          img.setAttribute("src", gameListData[currentNum].image)
+          img.className = "list-img";
+          imgContentWarpper.appendChild(img);
+          warpper.appendChild(imgContentWarpper);
+          
+          const titleWrapper = document.createElement('div');
+          const title = document.createElement('h2');
+          const titleText = document.createTextNode(gameListData[currentNum].title + " : ");
+          titleWrapper.className = "title-wrapper";
+          titleWrapper.appendChild(title);
+          title.appendChild(titleText);
+          title.setAttribute("id", gameListData[currentNum].id);
+          title.addEventListener("click", moveToRul, false);
+          warpper.appendChild(titleWrapper);
+
+          const contentWrapper = document.createElement('div');
+          const content = document.createElement('h2');
+          const contentText = document.createTextNode(gameListData[currentNum].content);
+          contentWrapper.className = "content-wrapper";
+          contentWrapper.appendChild(content);
+          content.appendChild(contentText);
+          warpper.appendChild(contentWrapper);
+
+          list.appendChild(warpper);
+
+          count += 1;
+          currentNum += 1;
+        }
+       }
+
+       function moveToRul(e) {
+        console.log(e.target.id)
+        location.href = "rule.html?id:"+ e.target.id;
+      }
+    </script>
+  </head>
+  <body>
+    <div id="menubar">
+      <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand">BoardGame Rules</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarsExample02" >
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">홈<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="list.html">목록</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="request.html">요청</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div id="list-wrapper">
+      <h1> 게임 목록</h1>
+      <div id="game-list"></div>
+      <div id="paging"></div>
+    </div>
+  </body>
+</html>
